@@ -15,12 +15,25 @@
   <div class="row">
     <div th:unless="${userName}" class="col">
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/oauth2/authorization/google}'|">구글 로그인</button>
-      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">네이버 로그인</button>
+      <button type="button" class="btn btn-success" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">네이버 로그인</button>
     </div>
     <div th:if="${userName}" class="col">
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/logout}'|">로그아웃</button>
     </div>
   </div>
+
+  <hr class="my-2">
+
+  <form th:action="@{/stations}">
+    <div class="row">
+      <div class="col">
+        <input type="text" id="address" name="address" class="form-control" placeholder="서울특별시 은평구 신사동 41-3 신사동 성당">
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-outline-danger">검색</button>
+      </div>
+    </div>
+  </form>
 
 </div>
 </body>

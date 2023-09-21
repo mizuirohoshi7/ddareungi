@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <tr th:each="station : ${stations}">
-      <td th:text="${station.getAddress()}"><a th:href="@{|/stations/${station.getId()}|}" th:text="${station.getAddress()}">주소</a></td>
+      <td><a th:href="@{|/stations/${station.getId()}|}" th:text="${station.getAddress()}">주소</a></td>
       <td th:text="${station.getHoldNum()}">거치대 수</td>
     </tr>
     </tbody>
