@@ -5,6 +5,10 @@ on:
     branches:
       - 'master'
 
+env:
+  S3_BUCKET_NAME: ddareungi-s3
+  PROJECT_NAME: ddareungi
+
 jobs:
   build:
     runs-on: ubuntu-latest
