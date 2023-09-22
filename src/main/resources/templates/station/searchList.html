@@ -12,6 +12,20 @@
     <h2>검색 목록</h2>
   </div>
 
+  <form th:action="@{/stations}">
+    <div class="row">
+      <div class="col-9">
+        <input type="text" id="address" name="address" class="form-control" placeholder="서울특별시 은평구 신사동 41-3 신사동 성당">
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-outline-danger">검색</button>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-outline-info" th:onclick="|location.href='@{/}'|">돌아가기</button>
+      </div>
+    </div>
+  </form>
+
   <hr class="my-2">
 
   <table class="table">
@@ -28,6 +42,32 @@
     </tr>
     </tbody>
   </table>
+
+  <nav>
+    <ul class="pagination">
+
+      <li class="page-item">
+        <a class="page-link" th:href="@{/stations(page=0, address=${address})}">처음</a>
+      </li>
+
+      <li class="page-item" th:unless="${stations.first}">
+        <a class="page-link" th:href="@{/stations(page=${stations.getNumber() - 1}, address=${address})}">이전</a>
+      </li>
+
+      <li th:class="page-item" th:each="page : ${#numbers.sequence(start, last)}">
+        <a class="page-link" th:href="@{/stations(page=${page - 1}, address=${address})}" th:text="${page}"></a>
+      </li>
+
+      <li class="page-item" th:unless="${stations.last}">
+        <a class="page-link" th:href="@{/stations(page=${stations.getNumber() + 1}, address=${address})}">다음</a>
+      </li>
+
+      <li class="page-item">
+        <a class="page-link" th:href="@{/stations(page=${stations.getTotalPages() - 1}, address=${address})}">마지막</a>
+      </li>
+
+    </ul>
+  </nav>
 
 </div>
 </body>

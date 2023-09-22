@@ -55,7 +55,7 @@ class StationServiceTest {
         PageRequest pageable = PageRequest.of(0, 10);
         given(stationRepository.search(any(), any(Pageable.class))).willReturn(page);
 
-        List<StationResponseDto> stationResponseDtos = stationService.search(address, pageable);
+        Page<StationResponseDto> stationResponseDtos = stationService.search(address, pageable);
 
         for (StationResponseDto stationResponseDto : stationResponseDtos) {
             assertThat(stationResponseDto.getAddress()).isNotNull();

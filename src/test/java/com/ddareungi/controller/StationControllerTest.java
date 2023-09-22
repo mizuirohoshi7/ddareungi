@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -33,12 +34,16 @@ class StationControllerTest {
     @Test
     void 주소_검색_리스트_반환_성공() throws Exception {
         String address = "테스트 주소";
-        List<StationResponseDto> stations = new ArrayList<>();
+        Page<StationResponseDto> stations = new PageImpl<>(new ArrayList<>());
         given(stationService.search(any(), any(Pageable.class))).willReturn(stations);
 
         mvc.perform(get("/stations?address=" + address))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("stations"))
+                .andExpect(model().attributeExists("address"))
+                .andExpect(model().attributeExists("cur"))
+                .andExpect(model().attributeExists("start"))
+                .andExpect(model().attributeExists("last"))
                 .andExpect(view().name("station/searchList"));
     }
 

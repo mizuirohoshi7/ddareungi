@@ -8,22 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class StationService {
 
     private final StationRepository stationRepository;
 
-    public List<StationResponseDto> search(String address, Pageable pageable) {
-        Page<Station> page = stationRepository.search(address, pageable);
-        List<StationResponseDto> stations = new ArrayList<>();
-        for (Station station : page) {
-            stations.add(new StationResponseDto(station));
-        }
-        return stations;
+    public Page<StationResponseDto> search(String address, Pageable pageable) {
+        return stationRepository.search(address, pageable)
+                .map(StationResponseDto::new);
     }
 
     public StationResponseDto findById(Long id) {

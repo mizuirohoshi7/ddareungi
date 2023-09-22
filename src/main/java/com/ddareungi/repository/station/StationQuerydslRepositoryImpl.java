@@ -30,7 +30,13 @@ public class StationQuerydslRepositoryImpl implements StationQuerydslRepository 
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return new PageImpl<>(content);
+        long total =  query
+                .selectFrom(station)
+                .where(station.address.contains(address))
+                .fetch()
+                .size();
+
+        return new PageImpl<>(content, pageable, total);
     }
 
 }
