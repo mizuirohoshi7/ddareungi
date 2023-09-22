@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/ddareungi/ (마지막 /를 빼지 않도록 주의할 것)
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  ApplicationStart:
+    - location: scripts/run_new_was.sh
+      timeout: 180
+      runas: ec2-user
+    - location: scripts/health_check.sh
+      timeout: 180
+      runas: ec2-user
+    - location: scripts/switch.sh
+      timeout: 180
+      runas: ec2-user
