@@ -23,7 +23,7 @@ if [ ! -z ${TARGET_PID} ]; then
 fi
 
 nohup java -jar \
- -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/properties/application-real-db.properties,/home/ec2-user/properties/application-oauth.properties,/home/ec2-user/properties/application-rest.properties \
+ -Dspring.config.location=classpath:/application-real.properties,/home/ec2-user/properties/application-real-db.properties,/home/ec2-user/properties/application-oauth.properties,/home/ec2-user/properties/application-rest.properties \
  -Dspring.profiles.active=real \
  -Dserver.port=${TARGET_PORT} \
   /home/ec2-user/ddareungi/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
