@@ -1,6 +1,5 @@
-package com.ddareungi.service.rest;
+package com.ddareungi.config.rest;
 
-import com.ddareungi.dto.rest.StationRestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;

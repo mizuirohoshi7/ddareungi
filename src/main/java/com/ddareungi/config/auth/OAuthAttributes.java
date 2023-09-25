@@ -1,7 +1,6 @@
 package com.ddareungi.config.auth;
 
 import com.ddareungi.domain.User;
-import com.ddareungi.domain.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -56,12 +55,7 @@ public class OAuthAttributes {
     }
 
     public User toEntity() {
-        return User.builder()
-                .name(name)
-                .email(email)
-                .picture(picture)
-                .role(UserRole.USER)
-                .build();
+        return User.createUser(name, email, picture);
     }
 
 }

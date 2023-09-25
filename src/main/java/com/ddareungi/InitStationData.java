@@ -1,9 +1,9 @@
 package com.ddareungi;
 
 import com.ddareungi.domain.Station;
-import com.ddareungi.dto.rest.StationRestDto;
+import com.ddareungi.config.rest.StationRestDto;
 import com.ddareungi.repository.station.StationRepository;
-import com.ddareungi.service.rest.StationRestService;
+import com.ddareungi.config.rest.StationRestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

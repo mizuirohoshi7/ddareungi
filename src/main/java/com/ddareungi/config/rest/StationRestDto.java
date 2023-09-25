@@ -1,9 +1,12 @@
-package com.ddareungi.dto.rest;
+package com.ddareungi.config.rest;
 
 import com.ddareungi.domain.Station;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 
 @NoArgsConstructor
 @Getter
@@ -26,6 +29,7 @@ public class StationRestDto {
 
     public Station toEntity() {
         return Station.builder()
+                .reviews(new ArrayList<>())
                 .address(STA_ADD1 + " " + STA_ADD2)
                 .stationLat(STA_LAT)
                 .stationLong(STA_LONG)

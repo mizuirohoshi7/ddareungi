@@ -3,7 +3,10 @@
 <head>
     <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>상세 화면</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=c1cxtlonmi"></script>
 </head>
 <body>
 <div class="container">
@@ -12,17 +15,34 @@
         <h2>상세 화면</h2>
     </div>
 
-    <div></div>
+    <div><button type="button" class="btn btn-primary" th:onclick="|location.href='@{/stations}'|">돌아가기</button></div>
 
     <hr class="my-2">
 
-    <div>지도</div>
+    <div id="map" class="my-2" style="width:100%;height:400px;">지도</div>
 
-    <div th:class="row">
-        <div th:class="col">주소</div>
-        <div th:class="col">거치대 수</div>
+    <div class="row">
+        <div class="col" th:text="${station.getAddress()}">주소</div>
+        <div class="col" th:text="'거치대 수: ' + ${station.holdNum} + '개'">거치대 수</div>
     </div>
 
+    <hr class="my-2">
+
 </div>
+<script th:inline="javascript">
+    const station = [[${station}]];
+</script>
+<script>
+    let mapOptions = {
+        center: new naver.maps.LatLng(station.stationLat, station.stationLong), zoom:17
+    };
+
+    let map = new naver.maps.Map('map', mapOptions);
+
+    let marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(station.stationLat, station.stationLong),
+        map: map
+    });
+</script>
 </body>
 </html>

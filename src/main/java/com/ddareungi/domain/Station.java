@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -14,6 +16,9 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "station_id")
     private Long id;
+
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
     @Column(nullable = false)
     private String address;
@@ -28,11 +33,11 @@ public class Station {
     private String holdNumber;
 
     @Builder
-    private Station(String address, Double stationLat, Double stationLong, String holdNumber) {
+    private Station(List<Review> reviews, String address, Double stationLat, Double stationLong, String holdNumber) {
+        this.reviews = reviews;
         this.address = address;
         this.stationLat = stationLat;
         this.stationLong = stationLong;
         this.holdNumber = holdNumber;
     }
-
 }
