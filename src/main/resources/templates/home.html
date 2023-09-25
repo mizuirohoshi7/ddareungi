@@ -39,7 +39,8 @@
   <div class="py-5"></div>
 
   <div class="text-start py-3">
-    <h5>즐겨찾기 리스트</h5>
+    <h5 th:unless="${user}">즐겨찾기는 로그인 후 가능합니다</h5>
+    <h5 th:if="${user}">즐겨찾기 리스트</h5>
   </div>
 
 </div>

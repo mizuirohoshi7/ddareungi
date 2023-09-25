@@ -1,7 +1,10 @@
 package com.ddareungi.service;
 
+import com.ddareungi.domain.Bookmark;
 import com.ddareungi.domain.Station;
+import com.ddareungi.domain.User;
 import com.ddareungi.dto.station.StationResponseDto;
+import com.ddareungi.repository.bookmark.BookmarkRepository;
 import com.ddareungi.repository.station.StationRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,7 +23,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +33,9 @@ class StationServiceTest {
 
     @Mock
     StationRepository stationRepository;
+    
+    @Mock
+    BookmarkRepository bookmarkRepository;
 
     static Page<Station> page;
     static Station station;
@@ -55,27 +60,44 @@ class StationServiceTest {
         PageRequest pageable = PageRequest.of(0, 10);
         given(stationRepository.search(any(), any(Pageable.class))).willReturn(page);
 
-        Page<StationResponseDto> stationResponseDtos = stationService.search(address, pageable);
+        Page<StationResponseDto> responseDtos = stationService.search(address, pageable);
 
-        for (StationResponseDto stationResponseDto : stationResponseDtos) {
-            assertThat(stationResponseDto.getAddress()).isNotNull();
-            assertThat(stationResponseDto.getStationLat()).isNotNull();
-            assertThat(stationResponseDto.getStationLong()).isNotNull();
-            assertThat(stationResponseDto.getHoldNum()).isNotNull();
+        for (StationResponseDto responseDto : responseDtos) {
+            assertThat(responseDto.getAddress()).isNotNull();
+            assertThat(responseDto.getStationLat()).isNotNull();
+            assertThat(responseDto.getStationLong()).isNotNull();
+            assertThat(responseDto.getHoldNum()).isNotNull();
         }
     }
 
     @Test
     void station_id_검색_성공() {
         Long id = 1L;
-        given(stationRepository.findById(anyLong())).willReturn(Optional.of(station));
+        given(stationRepository.findById(any())).willReturn(Optional.of(station));
 
-        StationResponseDto stationResponseDto = stationService.findById(id);
+        StationResponseDto responseDto = stationService.findById(id);
 
-        assertThat(stationResponseDto.getAddress()).isNotEmpty();
-        assertThat(stationResponseDto.getStationLat()).isNotNull();
-        assertThat(stationResponseDto.getStationLong()).isNotNull();
-        assertThat(stationResponseDto.getHoldNum()).isNotEmpty();
+        assertThat(responseDto.getAddress()).isNotEmpty();
+        assertThat(responseDto.getStationLat()).isNotNull();
+        assertThat(responseDto.getStationLong()).isNotNull();
+        assertThat(responseDto.getHoldNum()).isNotEmpty();
+    }
+    
+    @Test
+    void userId로_즐겨찾기한_station_검색_성공() {
+        Long userId = 1L;
+        List<Bookmark> bookmarks = new ArrayList<>();
+        bookmarks.add(new Bookmark(User.createUser("테스트 이름", "테스트 이메일", "테스트 프로필"), station));
+        given(bookmarkRepository.findAllByUserId(any())).willReturn(bookmarks);
+
+        List<StationResponseDto> responseDtos = stationService.findBookmarked(userId);
+
+        for (StationResponseDto responseDto : responseDtos) {
+            assertThat(responseDto.getAddress()).isNotEmpty();
+            assertThat(responseDto.getStationLat()).isNotNull();
+            assertThat(responseDto.getStationLong()).isNotNull();
+            assertThat(responseDto.getHoldNum()).isNotEmpty();
+        }
     }
 
 }

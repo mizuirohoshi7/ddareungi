@@ -48,12 +48,14 @@
         <tr>
             <th>글쓴이</th>
             <th>댓글</th>
+            <th>작성일</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="review : ${reviews}">
-            <td th:text="${review.userName}">글쓴이 이름</td>
-            <td th:text="${review.content}">댓글 내용</td>
+            <td th:text="${review.userName}" style="width: 10%">글쓴이 이름</td>
+            <td th:text="${review.content}" style="width: 70%">댓글 내용</td>
+            <td th:text="${review.createdAt}">댓글 작성일</td>
             <td th:if="${user} and ${user.id} == ${review.userId}">
                 <button th:id="'btn-delete' + ${review.reviewId}" th:value="${review.reviewId}" type="button"
                         class="btn btn-sm btn-outline-danger">삭제</button>

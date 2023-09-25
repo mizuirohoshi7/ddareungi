@@ -1,6 +1,7 @@
 const main = {
     init: function() {
         const _this = this;
+
         $('#btn-save').on('click', function () {
             _this.save();
         });
