@@ -1,7 +1,11 @@
 package com.ddareungi.controller;
 
+import com.ddareungi.config.auth.SessionUser;
+import com.ddareungi.dto.review.ReviewResponseDto;
 import com.ddareungi.dto.station.StationResponseDto;
+import com.ddareungi.service.ReviewService;
 import com.ddareungi.service.StationService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +27,8 @@ import java.util.List;
 public class StationController {
 
     private final StationService stationService;
+    private final ReviewService reviewService;
+    private final HttpSession session;
 
     @GetMapping
     public String stations(@RequestParam String address, @PageableDefault Pageable pageable, Model model) {
@@ -43,8 +49,16 @@ public class StationController {
 
     @GetMapping("/{id}")
     public String station(@PathVariable Long id, Model model) {
+        SessionUser user = (SessionUser) session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+
         StationResponseDto station = stationService.findById(id);
+        List<ReviewResponseDto> reviews = reviewService.findAllByStationId(id);
+
         model.addAttribute("station", station);
+        model.addAttribute("reviews", reviews);
         return "station/detail";
     }
 

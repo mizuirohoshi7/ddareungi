@@ -8,18 +8,20 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewResponseDto {
 
-    private String userName;
+    private Long reviewId;
+    private Long userId;
     private Long stationId;
+    private String userName;
     private String content;
     private LocalDateTime createdAt;
-    private LocalDateTime lastModifiedAt;
 
     public ReviewResponseDto(Review review) {
-        userName = review.getUser().getName();
+        reviewId = review.getId();
+        userId = review.getUser().getId();
         stationId = review.getStation().getId();
+        userName = review.getUser().getName();
         content = review.getContent();
         createdAt = review.getCreatedAt();
-        lastModifiedAt = review.getLastModifiedAt();
     }
 
 }

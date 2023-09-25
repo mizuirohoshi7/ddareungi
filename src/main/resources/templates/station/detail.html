@@ -15,8 +15,6 @@
         <h2>상세 화면</h2>
     </div>
 
-    <div><button type="button" class="btn btn-primary" th:onclick="|location.href='@{/stations}'|">돌아가기</button></div>
-
     <hr class="my-2">
 
     <div id="map" class="my-2" style="width:100%;height:400px;">지도</div>
@@ -28,7 +26,40 @@
 
     <hr class="my-2">
 
+    <form th:if="${user}" class="my-2">
+        <div class="row">
+            <div class="col-10">
+                <input id="content" type="text" class="form-control" placeholder="후기를 작성해주세요">
+            </div>
+            <input id="stationId" type="hidden" th:value="${station.id}">
+            <div class="col">
+                <button id="btn-save" type="button" class="btn btn-outline-primary">작성</button>
+            </div>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>글쓴이</th>
+            <th>댓글</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="review : ${reviews}">
+            <td th:text="${review.userName}">글쓴이 이름</td>
+            <td th:text="${review.content}">댓글 내용</td>
+            <td th:if="${user} and ${user.id} == ${review.userId}">
+                <button th:id="'btn-delete' + ${review.reviewId}" th:value="${review.reviewId}" type="button"
+                        class="btn btn-sm btn-outline-danger">삭제</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="/js/review.js"></script>
 <script th:inline="javascript">
     const station = [[${station}]];
 </script>

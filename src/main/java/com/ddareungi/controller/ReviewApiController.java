@@ -6,10 +6,8 @@ import com.ddareungi.dto.review.ReviewSaveDto;
 import com.ddareungi.service.ReviewService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,9 +18,14 @@ public class ReviewApiController {
     private final HttpSession session;
 
     @PostMapping("/save")
-    public ReviewResponseDto save(@RequestBody ReviewSaveDto saveDto) {
+    public ReviewResponseDto save(@RequestBody @Validated ReviewSaveDto saveDto) {
         SessionUser user = (SessionUser) session.getAttribute("user");
         return reviewService.save(user.getId(), saveDto);
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ReviewResponseDto delete(@PathVariable Long reviewId) {
+        return reviewService.delete(reviewId);
     }
 
 }

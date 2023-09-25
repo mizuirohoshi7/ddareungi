@@ -21,7 +21,6 @@ class UserTest {
         assertThat(user.getEmail()).isNotNull();
         assertThat(user.getPicture()).isNotNull();
         assertThat(user.getRole()).isNotNull();
-        assertThat(user.getReviews()).isNotNull();
     }
 
     @Test

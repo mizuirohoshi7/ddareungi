@@ -1,7 +1,11 @@
 package com.ddareungi.controller;
 
+import com.ddareungi.config.auth.SessionUser;
 import com.ddareungi.config.auth.TestSecurityConfig;
+import com.ddareungi.domain.User;
+import com.ddareungi.dto.review.ReviewResponseDto;
 import com.ddareungi.dto.station.StationResponseDto;
+import com.ddareungi.service.ReviewService;
 import com.ddareungi.service.StationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +15,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -31,8 +37,11 @@ class StationControllerTest {
     @MockBean
     StationService stationService;
 
+    @MockBean
+    ReviewService reviewService;
+
     @Test
-    void 주소_검색_리스트_반환_성공() throws Exception {
+    void 주소_검색_리스트_조회_성공() throws Exception {
         String address = "테스트 주소";
         Page<StationResponseDto> stations = new PageImpl<>(new ArrayList<>());
         given(stationService.search(any(), any(Pageable.class))).willReturn(stations);
@@ -48,13 +57,35 @@ class StationControllerTest {
     }
 
     @Test
-    void station_id_검색_성공() throws Exception {
+    void 로그인전_station_id_검색_성공() throws Exception {
         Long id = 1L;
+        List<ReviewResponseDto> reviews = new ArrayList<>();
         given(stationService.findById(anyLong())).willReturn(new StationResponseDto());
+        given(reviewService.findAllByStationId(id)).willReturn(reviews);
 
         mvc.perform(get("/stations/" + id))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeDoesNotExist("user"))
                 .andExpect(model().attributeExists("station"))
+                .andExpect(model().attributeExists("reviews"))
+                .andExpect(view().name("station/detail"));
+    }
+
+    @Test
+    void 로그인후_station_id_검색_성공() throws Exception {
+        Long id = 1L;
+        List<ReviewResponseDto> reviews = new ArrayList<>();
+        given(stationService.findById(anyLong())).willReturn(new StationResponseDto());
+        given(reviewService.findAllByStationId(id)).willReturn(reviews);
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", new SessionUser(User.createUser("test", "test", "test")));
+
+        mvc.perform(get("/stations/" + id)
+                        .session(session))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("station"))
+                .andExpect(model().attributeExists("reviews"))
                 .andExpect(view().name("station/detail"));
     }
 

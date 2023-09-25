@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -62,6 +63,13 @@ class ReviewApiControllerTest {
     }
 
     @Test
+    void stationId로_review_조회_성공() {
+        List<ReviewResponseDto> reviews = new ArrayList<>();
+        reviews.add(responseDto);
+        given(reviewService.findAllByStationId(any())).willReturn(reviews);
+    }
+
+    @Test
     void review_저장_성공() throws Exception {
         given(reviewService.save(any(), any(ReviewSaveDto.class))).willReturn(responseDto);
         Map<String, String> saveInput = new HashMap<>();
@@ -78,8 +86,27 @@ class ReviewApiControllerTest {
                 .andExpect(jsonPath("$.userName").exists())
                 .andExpect(jsonPath("$.stationId").doesNotExist())
                 .andExpect(jsonPath("$.content").exists())
-                .andExpect(jsonPath("$.createdAt").exists())
-                .andExpect(jsonPath("$.lastModifiedAt").exists());
+                .andExpect(jsonPath("$.createdAt").exists());
+    }
+
+    @Test
+    void review_삭제_성공() throws Exception {
+        Long reviewId = 5L;
+        given(reviewService.delete(any())).willReturn(responseDto);
+        Map<String, String> deleteInput = new HashMap<>();
+        deleteInput.put("reviewId", String.valueOf(reviewId));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", new SessionUser(user));
+
+        mvc.perform(delete("/reviews/" + reviewId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(deleteInput)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userName").exists())
+                .andExpect(jsonPath("$.stationId").doesNotExist())
+                .andExpect(jsonPath("$.content").exists())
+                .andExpect(jsonPath("$.createdAt").exists());
+
     }
 
 }

@@ -32,31 +32,22 @@ public class Review {
     private String content;
 
     private LocalDateTime createdAt;
-    private LocalDateTime lastModifiedAt;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Review(User user, Station station, String content, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+    private Review(User user, Station station, String content, LocalDateTime createdAt) {
         this.user = user;
         this.station = station;
         this.content = content;
         this.createdAt = createdAt;
-        this.lastModifiedAt = lastModifiedAt;
     }
 
     public static Review createReview(String content, User user, Station station) {
-        LocalDateTime now = now();
         return Review.builder()
                 .user(user)
                 .station(station)
                 .content(content)
-                .createdAt(now)
-                .lastModifiedAt(now)
+                .createdAt(now())
                 .build();
-    }
-
-    public void update(String content) {
-        this.content = content;
-        this.lastModifiedAt = now();
     }
 
 }

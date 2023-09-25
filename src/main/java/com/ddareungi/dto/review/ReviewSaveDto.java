@@ -1,14 +1,17 @@
 package com.ddareungi.dto.review;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 public class ReviewSaveDto {
 
+    @NotNull
     private Long stationId;
+
+    @NotNull
     private String content;
 
     public ReviewSaveDto(Long stationId, String content) {

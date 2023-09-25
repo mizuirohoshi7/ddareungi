@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -18,9 +15,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews;
 
     @Column(nullable = false)
     private String name;
@@ -35,8 +29,7 @@ public class User {
     private UserRole role;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private User(List<Review> reviews, String name, String email, String picture, UserRole role) {
-        this.reviews = reviews;
+    private User(String name, String email, String picture, UserRole role) {
         this.name = name;
         this.email = email;
         this.picture = picture;
@@ -49,7 +42,6 @@ public class User {
 
     public static User createUser(String name, String email, String picture) {
         return User.builder()
-                .reviews(new ArrayList<>())
                 .name(name)
                 .email(email)
                 .picture(picture)
