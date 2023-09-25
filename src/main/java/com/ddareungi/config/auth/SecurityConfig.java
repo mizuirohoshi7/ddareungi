@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -34,6 +35,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         http.authorizeHttpRequests(request -> request
+                .requestMatchers(HttpMethod.POST, "/stations").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/stations/**").authenticated()
                 .anyRequest().permitAll()
         );
         http.oauth2Login(oauth -> oauth.userInfoEndpoint(userInfo -> userInfo.userService(myOAuth2UserService())));

@@ -63,11 +63,13 @@ class StationControllerTest {
         given(stationService.findById(anyLong())).willReturn(new StationResponseDto());
         given(reviewService.findAllByStationId(id)).willReturn(reviews);
 
-        mvc.perform(get("/stations/" + id))
+        mvc.perform(get("/stations/" + id + "?page=3&address=서울"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeDoesNotExist("user"))
                 .andExpect(model().attributeExists("station"))
                 .andExpect(model().attributeExists("reviews"))
+                .andExpect(model().attributeExists("page"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(view().name("station/detail"));
     }
 
@@ -80,12 +82,14 @@ class StationControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("user", new SessionUser(User.createUser("test", "test", "test")));
 
-        mvc.perform(get("/stations/" + id)
+        mvc.perform(get("/stations/" + id + "?page=3&address=서울")
                         .session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("user"))
                 .andExpect(model().attributeExists("station"))
                 .andExpect(model().attributeExists("reviews"))
+                .andExpect(model().attributeExists("page"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(view().name("station/detail"));
     }
 

@@ -15,6 +15,11 @@
         <h2>상세 화면</h2>
     </div>
 
+    <div>
+        <button type="button" class="btn btn-outline-info"
+                th:onclick="|location.href='@{/stations(page=${page},address=${address})}'|">돌아가기</button>
+    </div>
+
     <hr class="my-2">
 
     <div id="map" class="my-2" style="width:100%;height:400px;">지도</div>

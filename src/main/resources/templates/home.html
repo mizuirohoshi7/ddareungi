@@ -13,12 +13,12 @@
   </div>
 
   <div class="row">
-    <div th:unless="${userName}" class="col">
+    <div th:unless="${user}" class="col">
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/oauth2/authorization/google}'|">구글 로그인</button>
       <button type="button" class="btn btn-success" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">네이버 로그인</button>
     </div>
-    <div th:if="${userName}" class="col" th:text="${userName} + '님 어서오세요'"></div>
-    <div th:if="${userName}" class="col">
+    <div th:if="${user}" class="col" th:text="${user.getName()} + '님 어서오세요'"></div>
+    <div th:if="${user}" class="col">
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/logout}'|">로그아웃</button>
     </div>
   </div>
@@ -35,6 +35,12 @@
       </div>
     </div>
   </form>
+
+  <div class="py-5"></div>
+
+  <div class="text-start py-3">
+    <h5>즐겨찾기 리스트</h5>
+  </div>
 
 </div>
 </body>

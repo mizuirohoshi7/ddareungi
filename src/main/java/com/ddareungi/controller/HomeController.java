@@ -17,7 +17,7 @@ public class HomeController {
     public String home(Model model) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if (user != null) {
-            model.addAttribute("userName", user.getName());
+            model.addAttribute("user", user);
         }
         return "home";
     }

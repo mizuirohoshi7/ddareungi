@@ -59,6 +59,8 @@ class StationServiceTest {
 
         for (StationResponseDto stationResponseDto : stationResponseDtos) {
             assertThat(stationResponseDto.getAddress()).isNotNull();
+            assertThat(stationResponseDto.getStationLat()).isNotNull();
+            assertThat(stationResponseDto.getStationLong()).isNotNull();
             assertThat(stationResponseDto.getHoldNum()).isNotNull();
         }
     }
@@ -71,6 +73,8 @@ class StationServiceTest {
         StationResponseDto stationResponseDto = stationService.findById(id);
 
         assertThat(stationResponseDto.getAddress()).isNotEmpty();
+        assertThat(stationResponseDto.getStationLat()).isNotNull();
+        assertThat(stationResponseDto.getStationLong()).isNotNull();
         assertThat(stationResponseDto.getHoldNum()).isNotEmpty();
     }
 

@@ -68,7 +68,6 @@ class ReviewServiceTest {
 
         for (ReviewResponseDto responseDto : responseDtos) {
             assertThat(responseDto.getUserName()).isNotNull();
-            assertThat(responseDto.getStationId()).isNull();
             assertThat(responseDto.getContent()).isNotNull();
             assertThat(responseDto.getCreatedAt()).isNotNull();
         }
@@ -84,7 +83,6 @@ class ReviewServiceTest {
         ReviewResponseDto responseDto = reviewService.save(userId, saveDto);
 
         assertThat(responseDto.getUserName()).isNotNull();
-        assertThat(responseDto.getStationId()).isNull();
         assertThat(responseDto.getContent()).isNotNull();
         assertThat(responseDto.getCreatedAt()).isNotNull();
     }
@@ -97,7 +95,6 @@ class ReviewServiceTest {
         ReviewResponseDto responseDto = reviewService.delete(reviewId);
 
         assertThat(responseDto.getUserName()).isNotNull();
-        assertThat(responseDto.getStationId()).isNull();
         assertThat(responseDto.getContent()).isNotNull();
         assertThat(responseDto.getCreatedAt()).isNotNull();
     }

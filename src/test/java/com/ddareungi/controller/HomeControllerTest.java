@@ -24,7 +24,7 @@ class HomeControllerTest {
     void 로그인전_홈_화면_불러오기_성공() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeDoesNotExist("userName"))
+                .andExpect(model().attributeDoesNotExist("user"))
                 .andExpect(view().name("home"));
     }
 
@@ -36,7 +36,7 @@ class HomeControllerTest {
 
         mvc.perform(get("/").session(session))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("userName"))
+                .andExpect(model().attributeExists("user"))
                 .andExpect(view().name("home"));
     }
 

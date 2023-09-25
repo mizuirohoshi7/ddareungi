@@ -48,7 +48,8 @@ public class StationController {
     }
 
     @GetMapping("/{id}")
-    public String station(@PathVariable Long id, Model model) {
+    public String station(@PathVariable Long id, Model model, @RequestParam(required = false) String address,
+                          @RequestParam(required = false) Integer page) {
         SessionUser user = (SessionUser) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("user", user);
@@ -59,6 +60,9 @@ public class StationController {
 
         model.addAttribute("station", station);
         model.addAttribute("reviews", reviews);
+        model.addAttribute("page", page);
+        model.addAttribute("address", address);
+
         return "station/detail";
     }
 
