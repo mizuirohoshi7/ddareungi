@@ -36,7 +36,10 @@ public class BookmarkService {
     }
 
     public BookmarkResponseDto findByUserIdAndStationId(Long userId, Long stationId) {
-        Bookmark bookmark = bookmarkRepository.findByUserIdAndStationId(userId, stationId).orElseThrow();
+        Bookmark bookmark = bookmarkRepository.findByUserIdAndStationId(userId, stationId).orElse(null);
+        if (bookmark == null) {
+            return null;
+        }
         return new BookmarkResponseDto(bookmark);
     }
 
