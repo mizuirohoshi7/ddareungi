@@ -1,8 +1,10 @@
 package com.ddareungi.controller;
 
 import com.ddareungi.config.auth.SessionUser;
+import com.ddareungi.dto.bookmark.BookmarkResponseDto;
 import com.ddareungi.dto.review.ReviewResponseDto;
 import com.ddareungi.dto.station.StationResponseDto;
+import com.ddareungi.service.BookmarkService;
 import com.ddareungi.service.ReviewService;
 import com.ddareungi.service.StationService;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,7 @@ public class StationController {
 
     private final StationService stationService;
     private final ReviewService reviewService;
+    private final BookmarkService bookmarkService;
     private final HttpSession session;
 
     @GetMapping
@@ -47,16 +50,20 @@ public class StationController {
         return "station/searchList";
     }
 
-    @GetMapping("/{id}")
-    public String station(@PathVariable Long id, Model model, @RequestParam(required = false) String address,
+    @GetMapping("/{stationId}")
+    public String station(@PathVariable Long stationId, Model model, @RequestParam(required = false) String address,
                           @RequestParam(required = false) Integer page) {
         SessionUser user = (SessionUser) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("user", user);
+            BookmarkResponseDto bookmark = bookmarkService.findByUserIdAndStationId(user.getId(), stationId);
+            if (bookmark != null) {
+                model.addAttribute("bookmarkId", bookmark.getId());
+            }
         }
 
-        StationResponseDto station = stationService.findById(id);
-        List<ReviewResponseDto> reviews = reviewService.findAllByStationId(id);
+        StationResponseDto station = stationService.findById(stationId);
+        List<ReviewResponseDto> reviews = reviewService.findAllByStationId(stationId);
 
         model.addAttribute("station", station);
         model.addAttribute("reviews", reviews);

@@ -1,34 +1,28 @@
-const reviewMain = {
+const bookmarkMain = {
     init: function() {
         const _this = this;
 
-        $('#review-btn-save').on('click', function () {
+        $('#bookmark-btn-save').on('click', function () {
             _this.save();
         });
 
-        $('#content').on('keypress', function (e) {
-            if (e.keyCode == '13') {
-                $('#review-btn-save').click();
-            }
-        })
-
-        $('.review-btn-delete').on('click', function (e) {
-            const reviewId = e.target.value;
-            _this.delete(reviewId);
+        $('#bookmark-btn-delete').on('click', function (e) {
+            const bookmarkId = e.target.value;
+            _this.delete(bookmarkId);
         });
     },
 
     save: function () {
-        const stationId = $('#stationId').val();
-        const content = $('#content').val()
+        const userId = $('#userId-bookmark').val();
+        const stationId = $('#stationId-bookmark').val();
         const data = {
-            stationId: stationId,
-            content: content
+            userId: userId,
+            stationId: stationId
         }
 
         $.ajax({
             type: 'POST',
-            url: '/reviews/save',
+            url: '/bookmarks/save',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
@@ -39,12 +33,12 @@ const reviewMain = {
         });
     },
 
-    delete: function (reviewId) {
-        const stationId = $('#stationId').val();
+    delete: function (bookmarkId) {
+        const stationId = $('#stationId-bookmark').val();
 
         $.ajax({
             type: 'DELETE',
-            url: '/reviews/' + reviewId,
+            url: '/bookmarks/' + bookmarkId,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
         }).done(function () {
@@ -55,4 +49,4 @@ const reviewMain = {
     }
 };
 
-reviewMain.init();
+bookmarkMain.init();

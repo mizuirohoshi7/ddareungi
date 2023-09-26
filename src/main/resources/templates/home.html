@@ -43,6 +43,12 @@
     <h5 th:if="${user}">즐겨찾기 리스트</h5>
   </div>
 
+  <ul th:if="${user}">
+    <li th:each="station : ${stations}">
+      <a th:href="@{|/stations/${station.id}|}" th:text="${station.address}">즐겨찾기된 거치대</a>
+    </li>
+  </ul>
+
 </div>
 </body>
 </html>

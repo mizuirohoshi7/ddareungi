@@ -12,6 +12,7 @@ class BookmarkTest {
         Station station = Station.builder().build();
         Bookmark bookmark = new Bookmark(user, station);
 
+        assertThat(bookmark.getId()).isNull();
         assertThat(bookmark.getUser()).isNotNull();
         assertThat(bookmark.getStation()).isNotNull();
     }

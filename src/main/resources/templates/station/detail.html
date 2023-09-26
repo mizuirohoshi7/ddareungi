@@ -15,9 +15,21 @@
         <h2>상세 화면</h2>
     </div>
 
-    <div>
-        <button type="button" class="btn btn-outline-info"
-                th:onclick="|location.href='@{/stations(page=${page},address=${address})}'|">돌아가기</button>
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-outline-info"
+                    th:onclick="|location.href='@{/stations(page=${page},address=${address})}'|">돌아가기</button>
+        </div>
+        <div class="col" th:if="${user}">
+            <form>
+                <input id="userId-bookmark" type="hidden" th:value="${user.id}">
+                <input id="stationId-bookmark" type="hidden" th:value="${station.id}">
+                <button th:unless="${bookmarkId}" id="bookmark-btn-save" type="button"
+                        class="btn btn-outline-warning">즐겨찾기</button>
+                <button th:if="${bookmarkId}" th:value="${bookmarkId}" id="bookmark-btn-delete" type="button"
+                        class="btn btn-outline-dark">즐겨찾기 해제</button>
+            </form>
+        </div>
     </div>
 
     <hr class="my-2">
@@ -38,7 +50,7 @@
             </div>
             <input id="stationId" type="hidden" th:value="${station.id}">
             <div class="col">
-                <button id="btn-save" type="button" class="btn btn-outline-primary">작성</button>
+                <button id="review-btn-save" type="button" class="btn btn-outline-primary">작성</button>
             </div>
         </div>
     </form>
@@ -58,7 +70,7 @@
             <td th:text="${review.createdAt}">댓글 작성일</td>
             <td th:if="${user} and ${user.id} == ${review.userId}">
                 <button th:id="'btn-delete' + ${review.reviewId}" th:value="${review.reviewId}" type="button"
-                        class="btn btn-sm btn-outline-danger">삭제</button>
+                        class="btn btn-sm btn-outline-danger review-btn-delete">삭제</button>
             </td>
         </tr>
         </tbody>
@@ -67,6 +79,7 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="/js/review.js"></script>
+<script src="/js/bookmark.js"></script>
 <script th:inline="javascript">
     const station = [[${station}]];
 </script>

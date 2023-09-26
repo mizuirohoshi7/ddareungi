@@ -2,9 +2,13 @@ package com.ddareungi.controller;
 
 import com.ddareungi.config.auth.SessionUser;
 import com.ddareungi.config.auth.TestSecurityConfig;
+import com.ddareungi.domain.Bookmark;
+import com.ddareungi.domain.Station;
 import com.ddareungi.domain.User;
+import com.ddareungi.dto.bookmark.BookmarkResponseDto;
 import com.ddareungi.dto.review.ReviewResponseDto;
 import com.ddareungi.dto.station.StationResponseDto;
+import com.ddareungi.service.BookmarkService;
 import com.ddareungi.service.ReviewService;
 import com.ddareungi.service.StationService;
 import org.junit.jupiter.api.Test;
@@ -39,6 +43,9 @@ class StationControllerTest {
 
     @MockBean
     ReviewService reviewService;
+
+    @MockBean
+    BookmarkService bookmarkService;
 
     @Test
     void 주소_검색_리스트_조회_성공() throws Exception {
@@ -77,8 +84,11 @@ class StationControllerTest {
     void 로그인후_station_id_검색_성공() throws Exception {
         Long id = 1L;
         List<ReviewResponseDto> reviews = new ArrayList<>();
+        Bookmark bookmark = new Bookmark(User.createUser("test", "test", "test"), Station.builder().build());
+        BookmarkResponseDto bookmarkResponseDto = new BookmarkResponseDto(bookmark);
         given(stationService.findById(anyLong())).willReturn(new StationResponseDto());
         given(reviewService.findAllByStationId(id)).willReturn(reviews);
+        given(bookmarkService.findByUserIdAndStationId(any(), any())).willReturn(bookmarkResponseDto);
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("user", new SessionUser(User.createUser("test", "test", "test")));
 
