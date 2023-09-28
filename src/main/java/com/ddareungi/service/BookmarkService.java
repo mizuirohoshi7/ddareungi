@@ -10,8 +10,10 @@ import com.ddareungi.repository.station.StationRepository;
 import com.ddareungi.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class BookmarkService {
 
@@ -35,6 +37,7 @@ public class BookmarkService {
         return new BookmarkResponseDto(bookmark);
     }
 
+    @Transactional(readOnly = true)
     public BookmarkResponseDto findByUserIdAndStationId(Long userId, Long stationId) {
         Bookmark bookmark = bookmarkRepository.findByUserIdAndStationId(userId, stationId).orElse(null);
         if (bookmark == null) {

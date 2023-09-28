@@ -10,11 +10,13 @@ import com.ddareungi.repository.station.StationRepository;
 import com.ddareungi.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ReviewService {
 
@@ -22,6 +24,7 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final StationRepository stationRepository;
 
+    @Transactional(readOnly = true)
     public List<ReviewResponseDto> findAllByStationId(Long stationId) {
         List<Review> reviews = reviewRepository.findAllByStationId(stationId);
         List<ReviewResponseDto> responseDtos = new ArrayList<>();
